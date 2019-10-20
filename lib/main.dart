@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 
 void main() => runApp(Counter());
 
@@ -9,8 +10,27 @@ class Counter extends StatefulWidget {
 }
 
 class _CounterState extends State<Counter> {
+  MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    keywords: <String>['game', 'rpg', 'lol', 'app'],
+    childDirected: false,
+    testDevices: <String>[],
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAdMob.instance
+        .initialize(appId: "ca-app-pub-6850949205111197~8373454474");
+
+    startBanner();
+    displayBanner();
+    displayInterstitial();
+  }
+
   int _increment = 0;
   int _lastIncrement = 0;
+  BannerAd myBanner;
+  InterstitialAd myInterstitial;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -105,5 +125,60 @@ class _CounterState extends State<Counter> {
       _lastIncrement = _increment;
       _increment = 0;
     });
+  }
+
+  void startBanner() {
+    myBanner = BannerAd(
+      adUnitId: BannerAd.testAdUnitId,
+      size: AdSize.smartBanner,
+      targetingInfo: targetingInfo,
+      listener: (MobileAdEvent event) {
+        if (event == MobileAdEvent.opened) {
+          // MobileAdEvent.opened
+          // MobileAdEvent.clicked
+          // MobileAdEvent.closed
+          // MobileAdEvent.failedToLoad
+          // MobileAdEvent.impression
+          // MobileAdEvent.leftApplication
+        }
+        print("BannerAd event is $event");
+      },
+    );
+  }
+
+  void displayBanner() {
+    myBanner
+      ..load()
+      ..show(
+        anchorOffset: 0.0,
+        anchorType: AnchorType.bottom,
+      );
+  }
+
+  void displayInterstitial() {
+    myInterstitial = buildInterstitial()
+      ..load()
+      ..show();
+  }
+
+  InterstitialAd buildInterstitial() {
+    return InterstitialAd(
+        adUnitId: InterstitialAd.testAdUnitId,
+        targetingInfo: MobileAdTargetingInfo(testDevices: <String>[]),
+        listener: (MobileAdEvent event) {
+          if (event == MobileAdEvent.loaded) {
+            myInterstitial?.show();
+          }
+          if (event == MobileAdEvent.clicked || event == MobileAdEvent.closed) {
+            myInterstitial.dispose();
+          }
+        });
+  }
+
+  @override
+  void dispose() {
+    myBanner?.dispose();
+    myInterstitial?.dispose();
+    super.dispose();
   }
 }
