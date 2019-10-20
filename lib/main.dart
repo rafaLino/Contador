@@ -106,7 +106,7 @@ class _CounterState extends State<Counter> {
 
   _add() async {
     if (await Vibration.hasVibrator()) {
-      Vibration.vibrate(duration: 100);
+      Vibration.vibrate(duration: 60);
     }
     setState(() {
       _increment++;
