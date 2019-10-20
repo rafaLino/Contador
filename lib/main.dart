@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 import 'package:firebase_admob/firebase_admob.dart';
-
+import './const/constants.dart';
 void main() => runApp(Counter());
 
 class Counter extends StatefulWidget {
@@ -11,20 +11,17 @@ class Counter extends StatefulWidget {
 
 class _CounterState extends State<Counter> {
   MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-    keywords: <String>['game', 'rpg', 'lol', 'app'],
-    childDirected: false,
-    testDevices: <String>[],
-  );
+      keywords: <String>['game', 'rpg', 'lol', 'app'], 
+      childDirected: false);
 
   @override
   void initState() {
     super.initState();
     FirebaseAdMob.instance
-        .initialize(appId: "ca-app-pub-6850949205111197~8373454474");
+        .initialize(appId: kappId);
 
     startBanner();
     displayBanner();
-    displayInterstitial();
   }
 
   int _increment = 0;
@@ -122,6 +119,7 @@ class _CounterState extends State<Counter> {
 
   _reset() {
     setState(() {
+      displayInterstitial();
       _lastIncrement = _increment;
       _increment = 0;
     });
@@ -129,8 +127,8 @@ class _CounterState extends State<Counter> {
 
   void startBanner() {
     myBanner = BannerAd(
-      adUnitId: BannerAd.testAdUnitId,
-      size: AdSize.smartBanner,
+      adUnitId: kbannerId,
+      size: AdSize.fullBanner,
       targetingInfo: targetingInfo,
       listener: (MobileAdEvent event) {
         if (event == MobileAdEvent.opened) {
@@ -163,8 +161,8 @@ class _CounterState extends State<Counter> {
 
   InterstitialAd buildInterstitial() {
     return InterstitialAd(
-        adUnitId: InterstitialAd.testAdUnitId,
-        targetingInfo: MobileAdTargetingInfo(testDevices: <String>[]),
+        adUnitId: kintersticialId,
+        targetingInfo: MobileAdTargetingInfo(),
         listener: (MobileAdEvent event) {
           if (event == MobileAdEvent.loaded) {
             myInterstitial?.show();

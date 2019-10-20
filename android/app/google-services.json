@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "233485534449",
+    "firebase_url": "https://contador-lite.firebaseio.com",
+    "project_id": "contador-lite",
+    "storage_bucket": "contador-lite.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233485534449:android:c151a6ee21c3af62ac9550",
+        "android_client_info": {
+          "package_name": "com.example.app_contador"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233485534449-8o48su2rn3ftd44sjc1ftcvidu475gdn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP6S03fBsCQk5RAyUBY2yE_DO1O79xQmY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "233485534449-8o48su2rn3ftd44sjc1ftcvidu475gdn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
