@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:233485534449:android:c151a6ee21c3af62ac9550",
+        "mobilesdk_app_id": "1:233485534449:android:8b4ebf9996b47eb7ac9550",
         "android_client_info": {
-          "package_name": "com.example.app_contador"
+          "package_name": "com.lino.app_contador"
         }
       },
       "oauth_client": [

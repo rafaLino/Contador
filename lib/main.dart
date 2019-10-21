@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import './const/constants.dart';
+
 void main() => runApp(Counter());
 
 class Counter extends StatefulWidget {
@@ -11,21 +12,18 @@ class Counter extends StatefulWidget {
 
 class _CounterState extends State<Counter> {
   MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-      keywords: <String>['game', 'rpg', 'lol', 'app'], 
-      childDirected: false);
+      keywords: <String>['game', 'rpg', 'lol', 'app'], childDirected: false);
 
   @override
   void initState() {
     super.initState();
-    FirebaseAdMob.instance
-        .initialize(appId: kappId);
+    FirebaseAdMob.instance.initialize(appId: kappId);
 
     startBanner();
     displayBanner();
   }
 
   int _increment = 0;
-  int _lastIncrement = 0;
   BannerAd myBanner;
   InterstitialAd myInterstitial;
   @override
@@ -38,65 +36,31 @@ class _CounterState extends State<Counter> {
         onTap: () => _add(),
         child: Scaffold(
           body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              SizedBox(
-                height: 200,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   FlatButton(
                       onPressed: () => _reset(),
                       child: Icon(Icons.settings_backup_restore)),
-                ],
-              ),
-              Center(
-                child: Container(
-                  width: 350,
-                  height: 350,
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 4, color: Colors.white),
-                      borderRadius: BorderRadius.all(Radius.circular(200))),
-                  child: Center(
-                      child: Text(
-                    _toString(_increment),
-                    style:
-                        TextStyle(fontSize: 120, fontWeight: FontWeight.bold),
-                  )),
-                ),
-              ),
-              SizedBox(
-                height: 100,
-              ),
-              Row(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(left: 25),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Last",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFBECADE),
-                          ),
-                        ),
-                        Text(
-                          _toString(_lastIncrement),
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                  Center(
+                    child: Container(
+                      width: 350,
+                      height: 350,
+                      decoration: BoxDecoration(
+                          border: Border.all(width: 4, color: Colors.white),
+                          borderRadius: BorderRadius.all(Radius.circular(200))),
+                      child: Center(
+                          child: Text(
+                        _toString(_increment),
+                        style: TextStyle(
+                            fontSize: 120, fontWeight: FontWeight.bold),
+                      )),
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -120,7 +84,6 @@ class _CounterState extends State<Counter> {
   _reset() {
     setState(() {
       displayInterstitial();
-      _lastIncrement = _increment;
       _increment = 0;
     });
   }
