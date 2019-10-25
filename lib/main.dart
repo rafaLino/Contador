@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vibration/vibration.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import './const/constants.dart';
@@ -13,19 +14,20 @@ class Counter extends StatefulWidget {
 class _CounterState extends State<Counter> {
   MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
       keywords: <String>['game', 'rpg', 'lol', 'app'], childDirected: false);
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseAdMob.instance.initialize(appId: kappId);
-
-    startBanner();
-    displayBanner();
-  }
-
+  SharedPreferences _prefs;
   int _increment = 0;
   BannerAd myBanner;
   InterstitialAd myInterstitial;
+
+  @override
+  void initState() {
+    initIncrement();
+    FirebaseAdMob.instance.initialize(appId: kappId);
+    startBanner();
+    displayBanner();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -68,16 +70,25 @@ class _CounterState extends State<Counter> {
     );
   }
 
+  initIncrement() async {
+    _prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _increment = (_prefs.getInt('increment') ?? 0);
+    });
+  }
+
   _add() async {
     if (await Vibration.hasVibrator()) {
       Vibration.vibrate(duration: 60);
     }
     setState(() {
-      _increment++;
+      _increment = (_prefs.getInt('increment') ?? 0) + 1;
+      _prefs.setInt('increment', _increment);
     });
   }
 
   String _toString(int value) {
+    if (value == null) return "00";
     return value.toString().padLeft(2, '0');
   }
 
@@ -85,6 +96,7 @@ class _CounterState extends State<Counter> {
     setState(() {
       displayInterstitial();
       _increment = 0;
+      _prefs.remove('increment');
     });
   }
 
